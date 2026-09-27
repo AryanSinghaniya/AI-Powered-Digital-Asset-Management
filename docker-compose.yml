@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  dam-app:
+    build: .
+    container_name: dam_local
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persistent storage for SQLite DB and ChromaDB vector index
+      - ./data:/app/data
+      # Mount your local media folder here so the container can access it
+      # Left side is host path, right side is container path
+      - ./my_local_media:/app/my_local_media
+    environment:
+      - SQLITE_DB_URL=sqlite:///./data/sqlite.db
+      - CHROMA_DB_DIR=./data/chroma_db
+      # Default folder to scan in UI (matches the bind mount above)
+      - SCAN_FOLDER=/app/my_local_media
+      
+      # Model Configuration (Swap for CPU speed vs accuracy)
+      # Options: ViT-B-32 (openai), ViT-L-14 (openai)
+      - CLIP_MODEL_NAME=ViT-B-32
+      - CLIP_PRETRAINED=openai
+      
+      # Video extraction
+      - VIDEO_FRAME_INTERVAL_SECONDS=5
+      
+      # Guardrails
+      - DEMO_MODE=False
+      - MAX_DATASET_SIZE_MB=50000
+      - MAX_FILES_COUNT=100000

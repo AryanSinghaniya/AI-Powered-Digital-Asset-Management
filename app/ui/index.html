@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Digital Asset Manager</title>
+    <link rel="stylesheet" href="/ui/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="glass-panel">
+            <h1>AI Digital Asset Manager</h1>
+            <div class="indexer-section">
+                <input type="text" id="folderPath" placeholder="Enter absolute folder path (e.g. C:\MyMedia)">
+                <button id="indexBtn">Start Indexing</button>
+            </div>
+            <div class="status-section">
+                <div class="status-text">Status: <span id="statusLabel">Idle</span></div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="stats" id="statsText">Total: 0 | Done: 0 | Pending: 0 | Failed: 0</div>
+                
+                <div class="folders-list" id="foldersList" style="margin-top: 15px; font-size: 0.9em; max-height: 100px; overflow-y: auto;">
+                    <strong>Indexed Folders:</strong> <span>None</span>
+                </div>
+                <button id="resetBtn" style="margin-top: 10px; background-color: #ff4757; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em;">Reset Entire Index</button>
+            </div>
+        </header>
+
+        <main class="glass-panel main-content">
+            <div class="search-section">
+                <input type="text" id="searchQuery" placeholder="Search naturally (e.g. 'a cute dog playing in grass')">
+                <button id="searchBtn">Search</button>
+            </div>
+            
+            <div class="filters">
+                <label><input type="checkbox" value="image" class="type-filter" checked> Images</label>
+                <label><input type="checkbox" value="video" class="type-filter" checked> Videos</label>
+                <label><input type="checkbox" value="pdf" class="type-filter" checked> PDFs</label>
+            </div>
+
+            <div class="results-grid" id="resultsGrid">
+                <!-- Result cards will be injected here -->
+            </div>
+        </main>
+    </div>
+    <script src="/ui/app.js"></script>
+</body>
+</html>

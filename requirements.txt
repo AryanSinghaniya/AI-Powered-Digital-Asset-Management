@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+sqlalchemy
+chromadb
+open-clip-torch
+PyMuPDF
+pytesseract
+opencv-python-headless
+Pillow
+python-dotenv
+pydantic
+pydantic-settings

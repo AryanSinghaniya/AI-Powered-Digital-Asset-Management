@@ -1,0 +1,15 @@
+venv/
+__pycache__/
+*.pyc
+.env
+data/
+my_local_media*/
+sample_media/
+dam.db
+test_*.py
+query_folders.py
+check_videos.py
+check_video_score.py
+run_e2e.py
+test_html.html
+claude_context.txt

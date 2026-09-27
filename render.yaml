@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: dam-app
+    env: docker
+    plan: free
+    envVars:
+      - key: DEMO_MODE
+        value: "True"
+      - key: SCAN_FOLDER
+        value: /app/sample_media
+      - key: MAX_DATASET_SIZE_MB
+        value: "50"
+      - key: MAX_FILES_COUNT
+        value: "100"

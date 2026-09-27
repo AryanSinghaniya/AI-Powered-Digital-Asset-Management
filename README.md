@@ -3,7 +3,7 @@ title: DAM App
 emoji: 🦀
 colorFrom: red
 colorTo: blue
-sdk: gradio
+sdk: docker
 sdk_version: 3.50.2
 app_file: run_hf.py
 pinned: false

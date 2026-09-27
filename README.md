@@ -1,3 +1,13 @@
+---
+title: DAM App
+emoji: 🦀
+colorFrom: red
+colorTo: blue
+sdk: gradio
+sdk_version: 3.50.2
+app_file: app.py
+pinned: false
+---
 # Local AI-Powered Digital Asset Management (DAM) System
 
 A robust, fully local, AI-powered Digital Asset Management application that indexes a folder of mixed media (images, videos, PDFs) and allows you to search them using natural language. It relies entirely on local models and open-source libraries—no cloud APIs, no authentication needed.

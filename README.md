@@ -5,7 +5,7 @@ colorFrom: red
 colorTo: blue
 sdk: gradio
 sdk_version: 3.50.2
-app_file: app.py
+app_file: run_hf.py
 pinned: false
 ---
 # Local AI-Powered Digital Asset Management (DAM) System

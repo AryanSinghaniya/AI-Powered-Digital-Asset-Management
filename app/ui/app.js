@@ -177,7 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="card-info">
                     <div class="filename" title="${res.filename}">${res.filename}</div>
-                    <div class="score">Relevance: ${(res.score * 100).toFixed(1)}%</div>
+                    <div class="file-meta">
+                        <span>${res.formatted_size || 'Unknown Size'}</span>
+                        <span class="score">${(res.score * 100).toFixed(1)}% Match</span>
+                    </div>
                     <button class="action-btn" onclick="openFile('${res.filepath.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}')">Open File Location</button>
                 </div>
             `;

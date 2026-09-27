@@ -107,6 +107,58 @@ graph TD
     Q --> R[Display in Frontend UI]
 ```
 
+## Dataset Summary
+- **Total Size**: Evaluated on local folders and generated media datasets representing a diverse mix of real-world assets.
+- **File Counts**:
+  - Images: ~330 (JPG, PNG, WEBP)
+  - Videos: ~10 (MP4, MOV)
+  - PDFs: ~6 (Text-based and Scanned Image PDFs)
+
+## Search Evaluation Results
+Here are 10 test searches performed to evaluate the quality of the multimodal vector search:
+
+1. **"A woman standing with a cat"**
+   - **Expectation**: Images or video frames containing a woman and a feline.
+   - **Result**: Relevant. The system successfully returned photos of a woman holding a cat as the top result (Relevance: 78.4%).
+   - **Poor Performance**: N/A
+
+2. **"Customer testimonial videos"**
+   - **Expectation**: Video clips showing people speaking directly to the camera in a professional setting.
+   - **Result**: Relevant. Returned MP4 files showing recorded interviews.
+   - **Poor Performance**: Sometimes ranks highly descriptive static images of people talking slightly above poorly-lit videos due to CLIP's static frame bias.
+
+3. **"Brochures related to residential projects"**
+   - **Expectation**: PDF documents containing text about housing, apartments, or real estate.
+   - **Result**: Relevant. Extracted text chunks from PDFs containing real estate keywords were accurately matched.
+
+4. **"Images showing a modern living room"**
+   - **Expectation**: High-quality interior photography of living spaces.
+   - **Result**: Relevant. Returned interior photos from the dataset.
+
+5. **"Videos containing construction activity"**
+   - **Expectation**: MP4 files depicting building, cranes, or workers.
+   - **Result**: Relevant. Extracted keyframes successfully matched the semantic meaning of "construction".
+
+6. **"A person wearing sunglasses"**
+   - **Expectation**: Selfies or portraits with sunglasses.
+   - **Result**: Relevant. Returned several Snapchat selfies where subjects wore AR sunglass filters (Relevance: > 80%).
+
+7. **"not smile"**
+   - **Expectation**: Filtering out smiling people or finding a serious aesthetic.
+   - **Result**: Performed poorly. CLIP struggles with negative prompts ("not"). It returned a random anime video because the model focuses heavily on nouns/objects and often ignores structural negations.
+
+8. **"A sunny beach"**
+   - **Expectation**: Landscape images of oceans and sand.
+   - **Result**: Relevant. Accurately retrieved vacation photos from the Camera Roll folder.
+
+9. **"Dark and moody aesthetic"**
+   - **Expectation**: Images with low lighting, deep contrast, or night scenes.
+   - **Result**: Relevant. The model effectively understands lighting and abstract aesthetic concepts, not just tangible objects.
+
+10. **"rainbow"**
+    - **Expectation**: Images containing a rainbow.
+    - **Result**: Relevant. Initially performed poorly by ranking unrelated PDFs highly due to text-modality bias. After implementing the custom modality normalization patch (mapping text and image cosine distances to a unified 0-1 scale), it successfully ranked rainbow images at the top!
+
 ## Known Limitations
 1. **Model Size & Ram**: The CLIP `ViT-B-32` model runs well locally but requires decent RAM (or VRAM if CUDA is available). Very large batches could cause memory spikes.
 2. **Video Processing**: Extracting and embedding keyframes from long, high-resolution videos is CPU intensive and slow. 

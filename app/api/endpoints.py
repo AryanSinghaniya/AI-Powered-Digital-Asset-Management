@@ -30,6 +30,8 @@ class SearchResult(BaseModel):
     type: str
     score: float
     parent_id: Optional[int] = None
+    size_bytes: Optional[int] = None
+    formatted_size: Optional[str] = None
 
 class IndexRequest(BaseModel):
     folder_path: str
@@ -113,8 +115,16 @@ def get_status(db: Session = Depends(get_db)):
         "processing": processing
     }
 
+def format_size(size_in_bytes):
+    if not size_in_bytes: return "Unknown Size"
+    for unit in ['B', 'KB', 'MB', 'GB']:
+        if size_in_bytes < 1024.0:
+            return f"{size_in_bytes:.1f} {unit}"
+        size_in_bytes /= 1024.0
+    return f"{size_in_bytes:.1f} TB"
+
 @router.post("/search", response_model=List[SearchResult])
-def search(request: SearchRequest):
+def search(request: SearchRequest, db: Session = Depends(get_db)):
     collection = get_collection()
     try:
         query_embedding = embedding_service.embed_text(request.query)
@@ -167,6 +177,15 @@ def search(request: SearchRequest):
                 score=round(score, 4),
                 parent_id=meta.get('parent_id')
             )
+            
+    # Now attach sizes from SQLite
+    filepaths = list(unique_results.keys())
+    if filepaths:
+        db_records = db.query(FileRecord.filepath, FileRecord.size_bytes).filter(FileRecord.filepath.in_(filepaths)).all()
+        size_map = {r.filepath: r.size_bytes for r in db_records}
+        for res in unique_results.values():
+            res.size_bytes = size_map.get(res.filepath)
+            res.formatted_size = format_size(res.size_bytes)
             
     sorted_results = sorted(unique_results.values(), key=lambda x: x.score, reverse=True)
     return sorted_results[:request.limit]

@@ -26,10 +26,11 @@ open_clip.create_model_and_transforms('ViT-B-32', pretrained='openai'); \
 # Copy application code
 COPY . /app
 
-# Ensure required directories exist for cold start
-RUN mkdir -p /app/data/chroma_db /app/sample_media
+# Ensure required directories exist for cold start and grant permissions for Hugging Face Spaces
+RUN mkdir -p /app/data/chroma_db /app/sample_media && \
+    chmod -R 777 /app/data /app/sample_media
 
-EXPOSE 8000
+EXPOSE 7860
 
 # Start FastAPI server
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]

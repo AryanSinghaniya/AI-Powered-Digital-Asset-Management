@@ -140,7 +140,7 @@ def search(request: SearchRequest, db: Session = Depends(get_db)):
             
     results = collection.query(
         query_embeddings=[query_embedding],
-        n_results=request.limit * 5,
+        n_results=request.limit * 10,  # Fetch a large pool to filter from
         where=where_clause,
         include=["metadatas", "distances"]
     )
@@ -154,19 +154,21 @@ def search(request: SearchRequest, db: Session = Depends(get_db)):
         item_type = meta['type']
         
         # Modality Normalization:
-        # CLIP text-to-text cosine distances are naturally much lower (higher similarity) 
-        # than text-to-image. We map them to a comparable 0-1 scale.
         if item_type == "pdf":
-            # Maps text distances (0.1 to 0.4) -> (0.0 to 1.0)
             norm_dist = (distance - 0.1) / 0.3
         elif item_type in ["image", "video"]:
-            # Maps image distances (0.7 to 0.9) -> (0.0 to 1.0)
-            norm_dist = (distance - 0.7) / 0.2
+            # Tighter bounds: Distances > 0.72 get 0% score.
+            norm_dist = (distance - 0.6) / 0.12
         else:
             norm_dist = distance
             
         norm_dist = max(0.0, min(1.0, norm_dist))
         score = 1.0 - norm_dist
+        
+        # Filter out anything with less than 15% match to ensure relevance
+        if score < 0.15:
+            continue
+            
         filepath = meta['filepath']
         
         if filepath not in unique_results or unique_results[filepath].score < score:
@@ -202,7 +204,7 @@ def open_file_location(request: OpenRequest):
         path = os.path.normpath(request.filepath)
         if os.name == 'nt':
             # Windows: Open explorer and select the file
-            subprocess.Popen(['explorer', '/select,', path])
+            subprocess.Popen(f'explorer /select,"{path}"')
         elif sys.platform == 'darwin':
             # macOS: Reveal in Finder
             subprocess.Popen(['open', '-R', path])

@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     query: query,
                     file_types: selectedTypes.length > 0 ? selectedTypes : null,
-                    limit: 12
+                    limit: 100
                 })
             });
             const data = await res.json();
@@ -190,6 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.openFile = async (filepath) => {
         try {
+            // Attempt to copy to clipboard as a fallback
+            try {
+                await navigator.clipboard.writeText(filepath);
+                alert("File path copied to clipboard:\n" + filepath + "\n\n(Attempting to open in Explorer...)");
+            } catch (err) {
+                alert("File path:\n" + filepath);
+            }
+            
             await fetch('/api/open', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

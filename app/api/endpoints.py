@@ -68,6 +68,14 @@ def start_indexing(request: IndexRequest, background_tasks: BackgroundTasks):
     # Clean the path: strip whitespace and surrounding quotes (single or double)
     target_folder = request.folder_path.strip().strip('"').strip("'")
     
+    # --- WINDOWS TO DOCKER TRANSLATION ---
+    # Automatically convert C:\Users\... to /app/Users/... for Docker
+    if "\\" in target_folder or target_folder.lower().startswith("c:"):
+        target_folder = target_folder.replace("\\", "/")
+        if target_folder.lower().startswith("c:/users/"):
+            target_folder = "/app/" + target_folder[3:]
+    # -------------------------------------
+    
     if settings.demo_mode:
         target_folder = settings.scan_folder
         logger.info(f"DEMO MODE: Forcing scan folder to {target_folder}")
@@ -157,16 +165,16 @@ def search(request: SearchRequest, db: Session = Depends(get_db)):
         if item_type == "pdf":
             norm_dist = (distance - 0.1) / 0.3
         elif item_type in ["image", "video"]:
-            # Tighter bounds: Distances > 0.72 get 0% score.
-            norm_dist = (distance - 0.6) / 0.12
+            # Relaxed bounds so valid matches aren't incorrectly hidden
+            norm_dist = (distance - 0.5) / 0.35
         else:
             norm_dist = distance
             
         norm_dist = max(0.0, min(1.0, norm_dist))
         score = 1.0 - norm_dist
         
-        # Filter out anything with less than 15% match to ensure relevance
-        if score < 0.15:
+        # Filter out extremely low-confidence matches
+        if score <= 0.01:
             continue
             
         filepath = meta['filepath']

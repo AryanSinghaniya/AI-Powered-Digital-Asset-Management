@@ -1,0 +1,55 @@
+=================================================
+       FINAL SUBMISSION CHECKLIST & GUIDE
+=================================================
+
+Great news! Because of the work we just did on your README.md, almost all of your submission requirements are already completed. 
+
+Here is how your project currently stacks up against the requirements:
+
+[✅] 1. Source-code repository
+   - Done! Your code is on GitHub. (Just make sure you've pushed the latest changes).
+
+[✅] 2. Clear setup and run instructions
+   - Done! These are beautifully detailed in the "Setup and Run Instructions" section of your README.md.
+
+[✅] 3. Sample environment file without secrets
+   - Done! I just created a `.env.sample` file in your folder that contains the default variables.
+
+[✅] 4. Short architecture and data-flow explanation
+   - Done! The README.md has an "Architecture Explanation" section and a Mermaid Data Flow Diagram.
+
+[✅] 5. Dataset summary, including total size and file counts
+   - Done! The README.md has a "Dataset & Search Evaluation" section with this info.
+
+[✅] 6. Search evaluation results
+   - Done! Included in the README.md with 6 diverse test cases (including negative prompts and multimodal searches).
+
+[✅] 8. Known limitations and production improvements
+   - Done! The README.md covers "Scaling Strategy" and "Known Limitations".
+
+-------------------------------------------------
+WHAT YOU STILL NEED TO DO (MANUALLY):
+-------------------------------------------------
+
+[⏳] 7. Short demo video showing ingestion and different searches
+   - YOU NEED TO RECORD THIS.
+   - How to do it:
+     1. Run your project (either via Docker or fixing your local Windows Python permissions as discussed earlier).
+     2. Use a screen recording tool (like OBS Studio, or Windows Game Bar by pressing Win + G).
+     3. Start recording.
+     4. Show the UI. Put a folder path in the input box and click "Start Indexing". Show the progress.
+     5. Do a few searches (e.g., "a woman standing with a cat", "customer testimonial videos").
+     6. Stop recording.
+     7. Upload this video to YouTube (as Unlisted) OR upload it to Google Drive/Dropbox and make sure the link is set to "Anyone with the link can view".
+     8. Paste that link right at the top of your README.md file or in the email/form you use to submit the assignment.
+
+=================================================
+FINAL SUBMISSION STEPS:
+=================================================
+1. Record your demo video (Step 7).
+2. Add the link to your video into your README.md (or directly in your submission email).
+3. Open your terminal in the `dam_project` folder and run:
+   git add .
+   git commit -m "Add .env.sample and final touches"
+   git push origin main
+4. Send them the link to your GitHub repository! Good luck!

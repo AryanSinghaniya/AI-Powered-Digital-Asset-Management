@@ -10,8 +10,9 @@ services:
       # Persistent storage for SQLite DB and ChromaDB vector index
       - ./data:/app/data
       # Mount your local media folder here so the container can access it
-      # Left side is host path, right side is container path
       - ./my_local_media:/app/my_local_media
+      # Mount the Windows C:\Users folder so you can access your Instagram pictures and C drive
+      - /c/Users:/app/Users
     environment:
       - SQLITE_DB_URL=sqlite:///./data/sqlite.db
       - CHROMA_DB_DIR=./data/chroma_db
